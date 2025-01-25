@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <Windows.h>
+#include <locale.h>
 
 #define MAX_LINE_LENGTH 1024      // 每行的最大长度
 #define MAX_ROLE_NAME_LENGTH 100 // 角色名的最大长度
@@ -22,7 +23,7 @@ void extract_ban(const char *line, const char *marker, Role roles[MAX_ROLES], in
     char *ban_pos;
 
     // 检查 marker 是否出现在当前行中
-    if ((ban_pos = strstr(line, marker)) != NULL) // 查找字符串
+    if ((ban_pos = strstr(line, marker)) != NULL) // 查找比对字符串
     {
         ban_pos += strlen(marker); // 跳过 marker
         while (*ban_pos == ' ') ban_pos++; // 跳过可能的空格
@@ -35,7 +36,7 @@ void extract_ban(const char *line, const char *marker, Role roles[MAX_ROLES], in
         char *end;
 
         // 按逗号、中文逗号和换行符分割字符
-        while ((end = strpbrk(start, "，,\n")) != NULL) 
+        while ((end = strpbrk(start, "，,\n")) != NULL) // 查询
         { 
             *end = '\0'; // 用结束符替换分隔符
             if (strlen(start) > 0) 
@@ -72,7 +73,7 @@ int main()
     // 设置控制台为 UTF-8 编码以正确显示中文
     SetConsoleOutputCP(65001);
     SetConsoleCP(65001);
-
+    setlocale(LC_ALL,"");
     // 定义两个角色数组，分别存储 (first) 和 (then) 的角色数据
     Role first_roles[MAX_ROLES]; // (first) 的角色数组
     Role then_roles[MAX_ROLES];  // (then) 的角色数组
